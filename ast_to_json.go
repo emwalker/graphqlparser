@@ -1,26 +1,19 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"log"
+	"os"
 
 	"github.com/emwalker/graphqlparser/parser"
 )
 
 func main() {
-	ast, err := parser.Parse(`
-		query {
-			organization(externalId: "123") {
-				links {
-					edges {
-						node {
-							name
-						}
-					}
-				}
-			}
-		}
-	`)
+	var input bytes.Buffer
+	io.Copy(&input, os.Stdin)
+	ast, err := parser.Parse(input.String())
 	defer ast.Release()
 
 	if err != nil {
