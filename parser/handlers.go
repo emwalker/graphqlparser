@@ -27,9 +27,9 @@ func lookupHandle(handle uintptr) interface{} {
 	r, ok := handleVals[handle]
 	if !ok {
 		if handle >= 100 && handle < handleIndex {
-			panic("deleted handle")
+			panic("deleted handle: " + string(handle))
 		} else {
-			panic("invalid handle")
+			panic("invalid handle: " + string(handle))
 		}
 	}
 	return r.val
@@ -38,7 +38,7 @@ func lookupHandle(handle uintptr) interface{} {
 func deleteHandles() {
 	handleLock.Lock()
 	defer handleLock.Unlock()
-	for handle, _ := range handleVals {
-		delete(handleVals, handle)
-	}
+	// for handle, _ := range handleVals {
+	// 	delete(handleVals, handle)
+	// }
 }
