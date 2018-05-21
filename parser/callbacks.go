@@ -41,6 +41,24 @@ func endVisitDocument(node *C.struct_GraphQLAstDocument, handle unsafe.Pointer) 
 	return shouldContinue(res)
 }
 
+//export endVisitFragmentDefinition
+func endVisitFragmentDefinition(node *C.struct_GraphQLAstFragmentDefinition, handle unsafe.Pointer) int {
+	res := parserVisitor(handle).Dispatch(EndFragmentDefinition, &FragmentDefinitionNode{
+		nodeType: nodeType{FragmentDefinition},
+		node:     node,
+	})
+	return shouldContinue(res)
+}
+
+//export endVisitFragmentSpread
+func endVisitFragmentSpread(node *C.struct_GraphQLAstFragmentSpread, handle unsafe.Pointer) int {
+	res := parserVisitor(handle).Dispatch(EndFragmentSpread, &FragmentSpreadNode{
+		nodeType: nodeType{FragmentSpread},
+		node:     node,
+	})
+	return shouldContinue(res)
+}
+
 //export endVisitName
 func endVisitName(node *C.struct_GraphQLAstName, handle unsafe.Pointer) int {
 	res := parserVisitor(handle).Dispatch(EndName, &NameNode{
@@ -99,6 +117,24 @@ func visitDocument(node *C.struct_GraphQLAstDocument, handle unsafe.Pointer) int
 func visitField(node *C.struct_GraphQLAstField, handle unsafe.Pointer) int {
 	res := parserVisitor(handle).Dispatch(Field, &FieldNode{
 		nodeType: nodeType{Field},
+		node:     node,
+	})
+	return shouldContinue(res)
+}
+
+//export visitFragmentDefinition
+func visitFragmentDefinition(node *C.struct_GraphQLAstFragmentDefinition, handle unsafe.Pointer) int {
+	res := parserVisitor(handle).Dispatch(FragmentDefinition, &FragmentDefinitionNode{
+		nodeType: nodeType{FragmentDefinition},
+		node:     node,
+	})
+	return shouldContinue(res)
+}
+
+//export visitFragmentSpread
+func visitFragmentSpread(node *C.struct_GraphQLAstFragmentSpread, handle unsafe.Pointer) int {
+	res := parserVisitor(handle).Dispatch(FragmentSpread, &FragmentSpreadNode{
+		nodeType: nodeType{FragmentSpread},
 		node:     node,
 	})
 	return shouldContinue(res)

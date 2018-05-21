@@ -51,6 +51,13 @@ func (n *AstNode) JSON() []byte {
 	return C.GoBytes(ptr, C.int(C.strlen(cStr)))
 }
 
+func newName(node *C.struct_GraphQLAstName) *NameNode {
+	return &NameNode{
+		nodeType{"NameNode"},
+		node,
+	}
+}
+
 type ArgumentNode struct {
 	nodeType
 	node *C.struct_GraphQLAstArgument
@@ -67,11 +74,25 @@ type FieldNode struct {
 }
 
 func (n *FieldNode) Name() *NameNode {
-	node := C.GraphQLAstField_get_name(n.node)
-	return &NameNode{
-		nodeType{"NameNode"},
-		node,
-	}
+	return newName(C.GraphQLAstField_get_name(n.node))
+}
+
+type FragmentDefinitionNode struct {
+	nodeType
+	node *C.struct_GraphQLAstFragmentDefinition
+}
+
+func (n *FragmentDefinitionNode) Name() *NameNode {
+	return newName(C.GraphQLAstFragmentDefinition_get_name(n.node))
+}
+
+type FragmentSpreadNode struct {
+	nodeType
+	node *C.struct_GraphQLAstFragmentSpread
+}
+
+func (n *FragmentSpreadNode) Name() *NameNode {
+	return newName(C.GraphQLAstFragmentSpread_get_name(n.node))
 }
 
 type NameNode struct {
@@ -108,9 +129,7 @@ func (n *StringValueNode) Value() string {
 }
 
 // MACRO(VariableDefinition, variable_definition) \
-// MACRO(FragmentSpread, fragment_spread) \
 // MACRO(InlineFragment, inline_fragment) \
-// MACRO(FragmentDefinition, fragment_definition) \
 // MACRO(Variable, variable) \
 // MACRO(IntValue, int_value) \
 // MACRO(FloatValue, float_value) \
@@ -138,14 +157,19 @@ func (n *StringValueNode) Value() string {
 
 func callbacks() *C.struct_GraphQLAstVisitorCallbacks {
 	return &C.struct_GraphQLAstVisitorCallbacks{
+		end_visit_argument:             (C.end_visit_argument_func)(C.endVisitArgument_cgo),
 		end_visit_directive:            (C.end_visit_directive_func)(C.endVisitDirective_cgo),
 		end_visit_document:             (C.end_visit_document_func)(C.endVisitDocument_cgo),
+		end_visit_fragment_definition:  (C.end_visit_fragment_definition_func)(C.endVisitFragmentDefinition_cgo),
+		end_visit_fragment_spread:      (C.end_visit_fragment_spread_func)(C.endVisitFragmentSpread_cgo),
 		end_visit_name:                 (C.end_visit_name_func)(C.endVisitName_cgo),
 		end_visit_operation_definition: (C.end_visit_operation_definition_func)(C.endVisitOperationDefinition_cgo),
 		end_visit_selection_set:        (C.end_visit_selection_set_func)(C.endVisitSelectionSet_cgo),
 		visit_argument:                 (C.visit_argument_func)(C.visitArgument_cgo),
 		visit_document:                 (C.visit_document_func)(C.visitDocument_cgo),
 		visit_field:                    (C.visit_field_func)(C.visitField_cgo),
+		visit_fragment_definition:      (C.visit_fragment_definition_func)(C.visitFragmentDefinition_cgo),
+		visit_fragment_spread:          (C.visit_fragment_spread_func)(C.visitFragmentSpread_cgo),
 		visit_name:                     (C.visit_name_func)(C.visitName_cgo),
 		visit_object_field:             (C.visit_object_field_func)(C.visitObjectField_cgo),
 		visit_operation_definition:     (C.visit_operation_definition_func)(C.visitOperationDefinition_cgo),

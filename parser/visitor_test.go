@@ -70,3 +70,42 @@ func TestVisitor(t *testing.T) {
 		t.Errorf("visitor test failed: %#v", *visitor.labels)
 	}
 }
+
+func TestFragmentSpread(t *testing.T) {
+	ast, err := parser.Parse(`
+		query QueryRoot {
+			organization(ext: "1") {
+				...Links_organization
+			}
+		}
+
+		fragment Links_organization on Organization {
+			name
+		}
+	`)
+
+	if err != nil {
+		t.Fail()
+	}
+
+	visitor := newVisitor(&parser.Handlers{
+		"EndFragmentDefinition": makeLabel("End"),
+		"EndFragmentSpread":     makeLabel("End"),
+		"FragmentDefinition":    makeLabel(""),
+		"FragmentSpread":        makeLabel(""),
+	})
+
+	visitor.Visit(ast)
+	defer ast.Release()
+
+	expected := []string{
+		"FragmentSpread",
+		"EndFragmentSpread",
+		"FragmentDefinition",
+		"EndFragmentDefinition",
+	}
+
+	if !reflect.DeepEqual(*visitor.labels, expected) {
+		t.Errorf("visitor test failed: %#v", *visitor.labels)
+	}
+}
