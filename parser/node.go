@@ -160,6 +160,7 @@ func callbacks() *C.struct_GraphQLAstVisitorCallbacks {
 		end_visit_argument:             (C.end_visit_argument_func)(C.endVisitArgument_cgo),
 		end_visit_directive:            (C.end_visit_directive_func)(C.endVisitDirective_cgo),
 		end_visit_document:             (C.end_visit_document_func)(C.endVisitDocument_cgo),
+		end_visit_field:                (C.end_visit_field_func)(C.endVisitField_cgo),
 		end_visit_fragment_definition:  (C.end_visit_fragment_definition_func)(C.endVisitFragmentDefinition_cgo),
 		end_visit_fragment_spread:      (C.end_visit_fragment_spread_func)(C.endVisitFragmentSpread_cgo),
 		end_visit_name:                 (C.end_visit_name_func)(C.endVisitName_cgo),

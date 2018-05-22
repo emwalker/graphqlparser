@@ -24,6 +24,7 @@ const (
 	EndDocument            = "EndDocument"
 	EndFragmentDefinition  = "EndFragmentDefinition"
 	EndFragmentSpread      = "EndFragmentSpread"
+	EndField               = "EndField"
 	EndName                = "EndName"
 	EndObjectField         = "EndObjectField"
 	EndOperationDefinition = "EndOperationDefinition"
@@ -39,29 +40,31 @@ const (
 )
 
 var (
-	passthroughHandler = func(v Visitor, n Node) bool {
+	passthrough = func(v Visitor, n Node) bool {
 		return true
 	}
 
 	defaultHandlers = Handlers{
-		Argument:               passthroughHandler,
-		Directive:              passthroughHandler,
-		Document:               passthroughHandler,
-		EndArgument:            passthroughHandler,
-		EndDirective:           passthroughHandler,
-		EndDocument:            passthroughHandler,
-		EndFragmentDefinition:  passthroughHandler,
-		EndFragmentSpread:      passthroughHandler,
-		EndName:                passthroughHandler,
-		EndObjectField:         passthroughHandler,
-		EndOperationDefinition: passthroughHandler,
-		EndSelectionSet:        passthroughHandler,
-		Field:                  passthroughHandler,
-		Name:                   passthroughHandler,
-		ObjectField:            passthroughHandler,
-		OperationDefinition:    passthroughHandler,
-		SelectionSet:           passthroughHandler,
-		StringValue:            passthroughHandler,
+		Argument:               passthrough,
+		Directive:              passthrough,
+		Document:               passthrough,
+		EndArgument:            passthrough,
+		EndDirective:           passthrough,
+		EndDocument:            passthrough,
+		EndField:               passthrough,
+		EndFragmentDefinition:  passthrough,
+		EndFragmentSpread:      passthrough,
+		EndName:                passthrough,
+		EndObjectField:         passthrough,
+		EndOperationDefinition: passthrough,
+		EndSelectionSet:        passthrough,
+		Field:                  passthrough,
+		FragmentSpread:         passthrough,
+		Name:                   passthrough,
+		ObjectField:            passthrough,
+		OperationDefinition:    passthrough,
+		SelectionSet:           passthrough,
+		StringValue:            passthrough,
 	}
 )
 

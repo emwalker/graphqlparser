@@ -41,6 +41,15 @@ func endVisitDocument(node *C.struct_GraphQLAstDocument, handle unsafe.Pointer) 
 	return shouldContinue(res)
 }
 
+//export endVisitField
+func endVisitField(node *C.struct_GraphQLAstField, handle unsafe.Pointer) int {
+	res := parserVisitor(handle).Dispatch(EndField, &FieldNode{
+		nodeType: nodeType{Field},
+		node:     node,
+	})
+	return shouldContinue(res)
+}
+
 //export endVisitFragmentDefinition
 func endVisitFragmentDefinition(node *C.struct_GraphQLAstFragmentDefinition, handle unsafe.Pointer) int {
 	res := parserVisitor(handle).Dispatch(EndFragmentDefinition, &FragmentDefinitionNode{

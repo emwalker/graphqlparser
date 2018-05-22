@@ -44,9 +44,11 @@ func TestVisitor(t *testing.T) {
 	visitor := newVisitor(&parser.Handlers{
 		"Document":               makeLabel(""),
 		"EndDocument":            makeLabel("End"),
+		"EndField":               makeLabel("End"),
 		"EndName":                makeLabel("End"),
 		"EndOperationDefinition": makeLabel("End"),
-		"Name": makeLabel(""),
+		"Field":                  makeLabel(""),
+		"Name":                   makeLabel(""),
 	})
 
 	visitor.Visit(ast)
@@ -56,12 +58,16 @@ func TestVisitor(t *testing.T) {
 		"Document",
 		"Name",
 		"EndName",
+		"Field",
 		"Name",
 		"EndName",
 		"Name",
 		"EndName",
+		"Field",
 		"Name",
 		"EndName",
+		"EndField",
+		"EndField",
 		"EndOperationDefinition",
 		"EndDocument",
 	}
