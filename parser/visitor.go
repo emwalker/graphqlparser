@@ -76,10 +76,10 @@ func (v *ParserVisitor) Dispatch(eventName string, node Node) bool {
 	return accept(v.visitor, node)
 }
 
-func NewVisitor(v Visitor, handlers *Handlers) *ParserVisitor {
+func NewVisitor(v Visitor, handlers Handlers) *ParserVisitor {
 	merged := make(Handlers)
 
-	for eventName, handler := range *handlers {
+	for eventName, handler := range handlers {
 		merged[eventName] = handler
 	}
 

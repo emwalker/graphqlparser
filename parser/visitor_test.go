@@ -12,7 +12,7 @@ type visitor struct {
 	parserVisitor *parser.ParserVisitor
 }
 
-func newVisitor(handlers *parser.Handlers) *visitor {
+func newVisitor(handlers parser.Handlers) *visitor {
 	visitor := &visitor{
 		labels: &[]string{},
 	}
@@ -41,7 +41,7 @@ func TestVisitor(t *testing.T) {
 		t.Fail()
 	}
 
-	visitor := newVisitor(&parser.Handlers{
+	visitor := newVisitor(parser.Handlers{
 		"Document":               makeLabel(""),
 		"EndDocument":            makeLabel("End"),
 		"EndField":               makeLabel("End"),
@@ -94,7 +94,7 @@ func TestFragmentSpread(t *testing.T) {
 		t.Fail()
 	}
 
-	visitor := newVisitor(&parser.Handlers{
+	visitor := newVisitor(parser.Handlers{
 		"EndFragmentDefinition": makeLabel("End"),
 		"EndFragmentSpread":     makeLabel("End"),
 		"FragmentDefinition":    makeLabel(""),
